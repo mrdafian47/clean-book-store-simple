@@ -21,7 +21,7 @@ object BookServiceFactory {
 
     private fun makeBookService(okHttpClient: OkHttpClient, gson: Gson): BookService {
         val retrofit = Retrofit.Builder()
-            .baseUrl("https://joe-birch-dsdb.squarespace.com/s/")
+            .baseUrl(BASE_URL)
             .client(okHttpClient)
             .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
             .addConverterFactory(GsonConverterFactory.create(gson))

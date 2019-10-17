@@ -3,9 +3,9 @@ package com.bookstoresimple.app.presentation.viewmodel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.bookstoresimple.app.domain.model.Book
-import com.bookstoresimple.app.usecase.GetBookListUseCase
 import com.bookstoresimple.app.presentation.data.Resource
 import com.bookstoresimple.app.presentation.data.ResourceState
+import com.bookstoresimple.app.usecase.GetBookListUseCase
 import io.reactivex.subscribers.DisposableSubscriber
 
 class BookViewModel(
@@ -26,7 +26,7 @@ class BookViewModel(
         getBookListUseCase.execute(BookSubscriber())
     }
 
-    inner class BookSubscriber : DisposableSubscriber<List<Book>>() {
+    private inner class BookSubscriber : DisposableSubscriber<List<Book>>() {
         override fun onComplete() {
 
         }
