@@ -3,16 +3,16 @@ package com.bookstoresimple.app.cache
 import com.bookstoresimple.app.cache.db.BookDatabase
 import com.bookstoresimple.app.cache.model.BookTable
 import com.bookstoresimple.app.cache.preference.BookPreference
-import com.bookstoresimple.app.data.repository.BookCache
+import com.bookstoresimple.app.data.source.BookCacheDataSource
 import com.bookstoresimple.app.domain.model.Book
 import io.reactivex.Completable
 import io.reactivex.Flowable
 import io.reactivex.Single
 
-class BookCacheImpl(
+class BookCacheDataSourceImpl(
     private val bookDatabase: BookDatabase,
     private val bookPreference: BookPreference
-) : BookCache {
+) : BookCacheDataSource {
 
     companion object {
         private const val EXPIRATION_TIME = (60 * 10 * 1000).toLong()

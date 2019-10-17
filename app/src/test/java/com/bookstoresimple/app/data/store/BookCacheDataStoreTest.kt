@@ -1,7 +1,7 @@
-package com.bookstoresimple.app.data.source
+package com.bookstoresimple.app.data.store
 
 import com.bookstoresimple.app.TestDataFactory
-import com.bookstoresimple.app.data.repository.BookCache
+import com.bookstoresimple.app.data.source.BookCacheDataSource
 import com.nhaarman.mockito_kotlin.doReturn
 import com.nhaarman.mockito_kotlin.mock
 import com.nhaarman.mockito_kotlin.whenever
@@ -17,21 +17,22 @@ import org.junit.runners.JUnit4
 @RunWith(JUnit4::class)
 class BookCacheDataStoreTest {
 
-    private lateinit var mockBookCache: BookCache
+    private lateinit var mockBookCacheDataSource: BookCacheDataSource
 
     private lateinit var bookCacheDataStore: BookCacheDataStore
 
     @Before
     fun setUp() {
 
-        mockBookCache = mock()
-        bookCacheDataStore = BookCacheDataStore(mockBookCache)
+        mockBookCacheDataSource = mock()
+        bookCacheDataStore =
+            BookCacheDataStore(mockBookCacheDataSource)
     }
 
     @Test
     fun clearBookList() {
 
-        whenever(mockBookCache.clearBookList())
+        whenever(mockBookCacheDataSource.clearBookList())
             .doReturn(Completable.complete())
 
         val testObserver = bookCacheDataStore.clearBookList().test()
@@ -44,7 +45,7 @@ class BookCacheDataStoreTest {
 
         val mockBookList = TestDataFactory.makeBookList()
 
-        whenever(mockBookCache.saveBookList(mockBookList))
+        whenever(mockBookCacheDataSource.saveBookList(mockBookList))
             .doReturn(Completable.complete())
 
         val testObserver = bookCacheDataStore.saveBookList(mockBookList).test()
@@ -57,7 +58,7 @@ class BookCacheDataStoreTest {
 
         val mockBookList = TestDataFactory.makeBookList()
 
-        whenever(mockBookCache.getBookList())
+        whenever(mockBookCacheDataSource.getBookList())
             .doReturn(Flowable.just(mockBookList))
 
         val testObserver = bookCacheDataStore.getBookList().test()
@@ -70,7 +71,7 @@ class BookCacheDataStoreTest {
     @Ignore(value = "Misplaced or misused argument matcher")
     fun isCached() {
 
-        whenever(mockBookCache.isCached())
+        whenever(mockBookCacheDataSource.isCached())
             .doReturn(Single.just(true))
 
         val testObserver = bookCacheDataStore.isCached().test()

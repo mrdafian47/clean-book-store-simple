@@ -18,7 +18,7 @@ class BookCacheImplTest {
     private lateinit var mockBookDatabase: BookDatabase
     private lateinit var mockBookPreference: BookPreference
 
-    private lateinit var bookCacheImpl: BookCacheImpl
+    private lateinit var bookCacheImpl: BookCacheDataSourceImpl
 
     @Before
     fun setUp() {
@@ -32,7 +32,7 @@ class BookCacheImplTest {
             RuntimeEnvironment.application
         )
 
-        bookCacheImpl = BookCacheImpl(
+        bookCacheImpl = BookCacheDataSourceImpl(
             mockBookDatabase,
             mockBookPreference
         )

@@ -1,6 +1,6 @@
-package com.bookstoresimple.app.data.source
+package com.bookstoresimple.app.data.store
 
-import com.bookstoresimple.app.data.repository.BookCache
+import com.bookstoresimple.app.data.source.BookCacheDataSource
 import com.nhaarman.mockito_kotlin.doReturn
 import com.nhaarman.mockito_kotlin.mock
 import com.nhaarman.mockito_kotlin.whenever
@@ -13,7 +13,7 @@ import org.junit.runners.JUnit4
 @RunWith(JUnit4::class)
 class BookDataStoreFactoryTest {
 
-    private lateinit var mockBookCache: BookCache
+    private lateinit var mockBookCacheDataSource: BookCacheDataSource
     private lateinit var mockBookCacheDataStore: BookCacheDataStore
     private lateinit var mockBookRemoteDataStore: BookRemoteDataStore
 
@@ -22,12 +22,12 @@ class BookDataStoreFactoryTest {
     @Before
     fun setUp() {
 
-        mockBookCache = mock()
+        mockBookCacheDataSource = mock()
         mockBookCacheDataStore = mock()
         mockBookRemoteDataStore = mock()
 
         bookDataStoreFactory = BookDataStoreFactory(
-            mockBookCache,
+            mockBookCacheDataSource,
             mockBookCacheDataStore,
             mockBookRemoteDataStore
         )
@@ -36,7 +36,7 @@ class BookDataStoreFactoryTest {
     @Test
     fun retrieveDataStore_WhenNotCached_ReturnRemoteDataSource() {
 
-        whenever(mockBookCache.isCached())
+        whenever(mockBookCacheDataSource.isCached())
             .doReturn(Single.just(false))
 
         val bookDataSource = bookDataStoreFactory.retrieveDataStore(false)
@@ -47,10 +47,10 @@ class BookDataStoreFactoryTest {
     @Test
     fun retrieveDataStore_WhenCachedExpired_ReturnRemoteDataSource() {
 
-        whenever(mockBookCache.isCached())
+        whenever(mockBookCacheDataSource.isCached())
             .doReturn(Single.just(true))
 
-        whenever(mockBookCache.isExpired())
+        whenever(mockBookCacheDataSource.isExpired())
             .doReturn(true)
 
         val bookDataSource = bookDataStoreFactory.retrieveDataStore(true)
@@ -61,10 +61,10 @@ class BookDataStoreFactoryTest {
     @Test
     fun retrieveDataStore_ReturnCacheDataSource() {
 
-        whenever(mockBookCache.isCached())
+        whenever(mockBookCacheDataSource.isCached())
             .doReturn(Single.just(true))
 
-        whenever(mockBookCache.isExpired())
+        whenever(mockBookCacheDataSource.isExpired())
             .doReturn(false)
 
         val bookDataSource = bookDataStoreFactory.retrieveDataStore(true)

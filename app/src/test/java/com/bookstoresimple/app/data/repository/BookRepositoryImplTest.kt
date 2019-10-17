@@ -1,9 +1,9 @@
-package com.bookstoresimple.app.data
+package com.bookstoresimple.app.data.repository
 
 import com.bookstoresimple.app.TestDataFactory
-import com.bookstoresimple.app.data.source.BookCacheDataStore
-import com.bookstoresimple.app.data.source.BookDataStoreFactory
-import com.bookstoresimple.app.data.source.BookRemoteDataStore
+import com.bookstoresimple.app.data.store.BookCacheDataStore
+import com.bookstoresimple.app.data.store.BookDataStoreFactory
+import com.bookstoresimple.app.data.store.BookRemoteDataStore
 import com.nhaarman.mockito_kotlin.*
 import io.reactivex.Completable
 import io.reactivex.Flowable
@@ -14,13 +14,13 @@ import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
 
 @RunWith(JUnit4::class)
-class BookDataRepositoryTest {
+class BookRepositoryImplTest {
 
     private lateinit var mockBookDataStoreFactory: BookDataStoreFactory
     private lateinit var mockBookCacheDataStore: BookCacheDataStore
     private lateinit var mockBookRemoteDataStore: BookRemoteDataStore
 
-    private lateinit var bookDataRepository: BookDataRepository
+    private lateinit var bookRepositoryImpl: BookRepositoryImpl
 
     @Before
     fun setUp() {
@@ -29,7 +29,8 @@ class BookDataRepositoryTest {
         mockBookCacheDataStore = mock()
         mockBookRemoteDataStore = mock()
 
-        bookDataRepository = BookDataRepository(mockBookDataStoreFactory)
+        bookRepositoryImpl =
+            BookRepositoryImpl(mockBookDataStoreFactory)
 
         whenever(mockBookDataStoreFactory.retrieveCacheDataStore())
             .doReturn(mockBookCacheDataStore)
@@ -44,7 +45,7 @@ class BookDataRepositoryTest {
         whenever(mockBookCacheDataStore.clearBookList())
             .doReturn(Completable.complete())
 
-        val testObserver = bookDataRepository.clearBookList().test()
+        val testObserver = bookRepositoryImpl.clearBookList().test()
 
         testObserver.assertComplete()
     }
@@ -55,7 +56,7 @@ class BookDataRepositoryTest {
         whenever(mockBookCacheDataStore.clearBookList())
             .doReturn(Completable.complete())
 
-        bookDataRepository.clearBookList().test()
+        bookRepositoryImpl.clearBookList().test()
 
         verify(mockBookCacheDataStore).clearBookList()
     }
@@ -66,7 +67,7 @@ class BookDataRepositoryTest {
         whenever(mockBookCacheDataStore.clearBookList())
             .doReturn(Completable.complete())
 
-        bookDataRepository.clearBookList().test()
+        bookRepositoryImpl.clearBookList().test()
 
         verify(mockBookRemoteDataStore, never()).clearBookList()
     }
@@ -79,7 +80,7 @@ class BookDataRepositoryTest {
         whenever(mockBookCacheDataStore.saveBookList(any()))
             .doReturn(Completable.complete())
 
-        val testObserver = bookDataRepository.saveBookList(mockBookList).test()
+        val testObserver = bookRepositoryImpl.saveBookList(mockBookList).test()
 
         testObserver.assertComplete()
     }
@@ -92,7 +93,7 @@ class BookDataRepositoryTest {
         whenever(mockBookCacheDataStore.saveBookList(any()))
             .doReturn(Completable.complete())
 
-        bookDataRepository.saveBookList(mockBookList).test()
+        bookRepositoryImpl.saveBookList(mockBookList).test()
 
         verify(mockBookCacheDataStore).saveBookList(any())
     }
@@ -105,7 +106,7 @@ class BookDataRepositoryTest {
         whenever(mockBookCacheDataStore.saveBookList(any()))
             .doReturn(Completable.complete())
 
-        bookDataRepository.saveBookList(mockBookList).test()
+        bookRepositoryImpl.saveBookList(mockBookList).test()
 
         verify(mockBookRemoteDataStore, never()).saveBookList(any())
     }
@@ -127,7 +128,7 @@ class BookDataRepositoryTest {
         whenever(mockBookCacheDataStore.saveBookList(any()))
             .doReturn(Completable.complete())
 
-        val testObserver = bookDataRepository.getBookList().test()
+        val testObserver = bookRepositoryImpl.getBookList().test()
 
         testObserver.assertComplete()
         testObserver.assertValue(mockBookList)
@@ -150,7 +151,7 @@ class BookDataRepositoryTest {
         whenever(mockBookCacheDataStore.saveBookList(any()))
             .doReturn(Completable.complete())
 
-        val testObserver = bookDataRepository.getBookList().test()
+        val testObserver = bookRepositoryImpl.getBookList().test()
 
         testObserver.assertComplete()
         testObserver.assertValue(mockBookList)
@@ -173,7 +174,7 @@ class BookDataRepositoryTest {
         whenever(mockBookCacheDataStore.saveBookList(any()))
             .doReturn(Completable.complete())
 
-        val testObserver = bookDataRepository.getBookList().test()
+        val testObserver = bookRepositoryImpl.getBookList().test()
 
         testObserver.assertComplete()
         testObserver.assertValue(mockBookList)

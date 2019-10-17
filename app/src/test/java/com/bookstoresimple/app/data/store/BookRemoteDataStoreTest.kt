@@ -1,7 +1,7 @@
-package com.bookstoresimple.app.data.source
+package com.bookstoresimple.app.data.store
 
 import com.bookstoresimple.app.TestDataFactory
-import com.bookstoresimple.app.data.repository.BookRemote
+import com.bookstoresimple.app.data.source.BookRemoteDataSource
 import com.nhaarman.mockito_kotlin.doReturn
 import com.nhaarman.mockito_kotlin.mock
 import com.nhaarman.mockito_kotlin.whenever
@@ -14,15 +14,16 @@ import org.junit.runners.JUnit4
 @RunWith(JUnit4::class)
 class BookRemoteDataStoreTest {
 
-    private lateinit var mockBookRemote: BookRemote
+    private lateinit var mockBookRemoteDataSource: BookRemoteDataSource
 
     private lateinit var bookRemoteDataStore: BookRemoteDataStore
 
     @Before
     fun setUp() {
 
-        mockBookRemote = mock()
-        bookRemoteDataStore = BookRemoteDataStore(mockBookRemote)
+        mockBookRemoteDataSource = mock()
+        bookRemoteDataStore =
+            BookRemoteDataStore(mockBookRemoteDataSource)
     }
 
     @Test(expected = UnsupportedOperationException::class)
@@ -44,7 +45,7 @@ class BookRemoteDataStoreTest {
 
         val mockBookList = TestDataFactory.makeBookList()
 
-        whenever(mockBookRemote.getBookList())
+        whenever(mockBookRemoteDataSource.getBookList())
             .doReturn(Flowable.just(mockBookList))
 
         val testObserver = bookRemoteDataStore.getBookList().test()

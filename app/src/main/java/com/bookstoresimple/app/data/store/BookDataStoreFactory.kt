@@ -1,16 +1,15 @@
-package com.bookstoresimple.app.data.source
+package com.bookstoresimple.app.data.store
 
-import com.bookstoresimple.app.data.repository.BookCache
-import com.bookstoresimple.app.data.repository.BookDataStore
+import com.bookstoresimple.app.data.source.BookCacheDataSource
 
 open class BookDataStoreFactory(
-    private val bookCache: BookCache,
+    private val bookCacheDataSource: BookCacheDataSource,
     private val bookCacheDataStore: BookCacheDataStore,
     private val bookRemoteDataStore: BookRemoteDataStore
 ) {
 
     open fun retrieveDataStore(isCached: Boolean): BookDataStore {
-        if (isCached && !bookCache.isExpired()) {
+        if (isCached && !bookCacheDataSource.isExpired()) {
             return retrieveCacheDataStore()
         }
         return retrieveRemoteDataStore()

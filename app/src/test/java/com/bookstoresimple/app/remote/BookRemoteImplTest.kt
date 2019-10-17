@@ -16,13 +16,13 @@ class BookRemoteImplTest {
 
     private lateinit var mockBookService: BookService
 
-    private lateinit var bookRemoteImpl: BookRemoteImpl
+    private lateinit var bookRemoteImpl: BookRemoteDataSourceImpl
 
     @Before
     fun setUp() {
 
         mockBookService = mock()
-        bookRemoteImpl = BookRemoteImpl(mockBookService)
+        bookRemoteImpl = BookRemoteDataSourceImpl(mockBookService)
     }
 
     @Test

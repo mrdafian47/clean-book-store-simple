@@ -1,12 +1,12 @@
-package com.bookstoresimple.app.data
+package com.bookstoresimple.app.data.repository
 
-import com.bookstoresimple.app.data.source.BookDataStoreFactory
+import com.bookstoresimple.app.data.store.BookDataStoreFactory
 import com.bookstoresimple.app.domain.model.Book
 import com.bookstoresimple.app.domain.repository.BookRepository
 import io.reactivex.Completable
 import io.reactivex.Flowable
 
-class BookDataRepository(
+class BookRepositoryImpl(
     private val bookDataStoreFactory: BookDataStoreFactory
 ) : BookRepository {
 
