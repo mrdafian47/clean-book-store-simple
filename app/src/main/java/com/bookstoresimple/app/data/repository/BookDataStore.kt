@@ -5,7 +5,7 @@ import io.reactivex.Completable
 import io.reactivex.Flowable
 import io.reactivex.Single
 
-interface BookDataSource {
+interface BookDataStore {
 
     fun clearBookList(): Completable
 

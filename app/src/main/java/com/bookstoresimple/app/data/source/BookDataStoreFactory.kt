@@ -1,7 +1,7 @@
 package com.bookstoresimple.app.data.source
 
 import com.bookstoresimple.app.data.repository.BookCache
-import com.bookstoresimple.app.data.repository.BookDataSource
+import com.bookstoresimple.app.data.repository.BookDataStore
 
 open class BookDataStoreFactory(
     private val bookCache: BookCache,
@@ -9,18 +9,18 @@ open class BookDataStoreFactory(
     private val bookRemoteDataStore: BookRemoteDataStore
 ) {
 
-    open fun retrieveDataStore(isCached: Boolean): BookDataSource {
+    open fun retrieveDataStore(isCached: Boolean): BookDataStore {
         if (isCached && !bookCache.isExpired()) {
             return retrieveCacheDataStore()
         }
         return retrieveRemoteDataStore()
     }
 
-    open fun retrieveCacheDataStore(): BookDataSource {
+    open fun retrieveCacheDataStore(): BookDataStore {
         return bookCacheDataStore
     }
 
-    open fun retrieveRemoteDataStore(): BookDataSource {
+    open fun retrieveRemoteDataStore(): BookDataStore {
         return bookRemoteDataStore
     }
 }
