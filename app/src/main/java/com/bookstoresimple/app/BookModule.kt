@@ -4,13 +4,10 @@ import androidx.room.Room
 import com.bookstoresimple.app.cache.BookCacheDataSourceImpl
 import com.bookstoresimple.app.cache.db.BookDatabase
 import com.bookstoresimple.app.cache.preference.BookPreference
-import com.bookstoresimple.app.data.repository.BookRepositoryImpl
 import com.bookstoresimple.app.data.executor.JobExecutor
+import com.bookstoresimple.app.data.repository.BookRepositoryImpl
 import com.bookstoresimple.app.data.source.BookCacheDataSource
 import com.bookstoresimple.app.data.source.BookRemoteDataSource
-import com.bookstoresimple.app.data.store.BookCacheDataStore
-import com.bookstoresimple.app.data.store.BookDataStoreFactory
-import com.bookstoresimple.app.data.store.BookRemoteDataStore
 import com.bookstoresimple.app.domain.executor.PostExecutionThread
 import com.bookstoresimple.app.domain.executor.ThreadExecutor
 import com.bookstoresimple.app.domain.repository.BookRepository
@@ -39,18 +36,12 @@ val cacheModule = module {
 
     single { BookPreference(get()) }
 
-    single<BookCacheDataSource> { BookCacheDataSourceImpl(get(), get()) }
+    factory<BookCacheDataSource> { BookCacheDataSourceImpl(get(), get()) }
 }
 
 val dataModule = module {
 
-    factory { BookCacheDataStore(get()) }
-
-    factory { BookRemoteDataStore(get()) }
-
-    factory { BookDataStoreFactory(get(), get(), get()) }
-
-    factory<BookRepository> { BookRepositoryImpl(get()) }
+    factory<BookRepository> { BookRepositoryImpl(get(), get()) }
 }
 
 val domainModule = module {
@@ -66,7 +57,7 @@ val remoteModule = module {
 
     single { BookServiceFactory.makeBookService(BuildConfig.DEBUG) }
 
-    single<BookRemoteDataSource> { BookRemoteDataSourceImpl(get()) }
+    factory<BookRemoteDataSource> { BookRemoteDataSourceImpl(get()) }
 }
 
 val useCaseModule = module {

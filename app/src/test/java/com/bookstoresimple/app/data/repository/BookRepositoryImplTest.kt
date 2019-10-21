@@ -1,9 +1,8 @@
 package com.bookstoresimple.app.data.repository
 
 import com.bookstoresimple.app.TestDataFactory
-import com.bookstoresimple.app.data.store.BookCacheDataStore
-import com.bookstoresimple.app.data.store.BookDataStoreFactory
-import com.bookstoresimple.app.data.store.BookRemoteDataStore
+import com.bookstoresimple.app.data.source.BookCacheDataSource
+import com.bookstoresimple.app.data.source.BookRemoteDataSource
 import com.nhaarman.mockito_kotlin.*
 import io.reactivex.Completable
 import io.reactivex.Flowable
@@ -16,33 +15,27 @@ import org.junit.runners.JUnit4
 @RunWith(JUnit4::class)
 class BookRepositoryImplTest {
 
-    private lateinit var mockBookDataStoreFactory: BookDataStoreFactory
-    private lateinit var mockBookCacheDataStore: BookCacheDataStore
-    private lateinit var mockBookRemoteDataStore: BookRemoteDataStore
+    private lateinit var mockBookCacheDataSource: BookCacheDataSource
+    private lateinit var mockBookRemoteDataSource: BookRemoteDataSource
 
     private lateinit var bookRepositoryImpl: BookRepositoryImpl
 
     @Before
     fun setUp() {
 
-        mockBookDataStoreFactory = mock()
-        mockBookCacheDataStore = mock()
-        mockBookRemoteDataStore = mock()
+        mockBookCacheDataSource = mock()
+        mockBookRemoteDataSource = mock()
 
-        bookRepositoryImpl =
-            BookRepositoryImpl(mockBookDataStoreFactory)
-
-        whenever(mockBookDataStoreFactory.retrieveCacheDataStore())
-            .doReturn(mockBookCacheDataStore)
-
-        whenever(mockBookDataStoreFactory.retrieveRemoteDataStore())
-            .doReturn(mockBookRemoteDataStore)
+        bookRepositoryImpl = BookRepositoryImpl(
+            mockBookCacheDataSource,
+            mockBookRemoteDataSource
+        )
     }
 
     @Test
     fun clearBookList() {
 
-        whenever(mockBookCacheDataStore.clearBookList())
+        whenever(mockBookCacheDataSource.clearBookList())
             .doReturn(Completable.complete())
 
         val testObserver = bookRepositoryImpl.clearBookList().test()
@@ -51,33 +44,11 @@ class BookRepositoryImplTest {
     }
 
     @Test
-    fun clearBookList_cacheDataStore() {
-
-        whenever(mockBookCacheDataStore.clearBookList())
-            .doReturn(Completable.complete())
-
-        bookRepositoryImpl.clearBookList().test()
-
-        verify(mockBookCacheDataStore).clearBookList()
-    }
-
-    @Test
-    fun clearBookList_remoteDataStore() {
-
-        whenever(mockBookCacheDataStore.clearBookList())
-            .doReturn(Completable.complete())
-
-        bookRepositoryImpl.clearBookList().test()
-
-        verify(mockBookRemoteDataStore, never()).clearBookList()
-    }
-
-    @Test
     fun saveBookList() {
 
         val mockBookList = TestDataFactory.makeBookList()
 
-        whenever(mockBookCacheDataStore.saveBookList(any()))
+        whenever(mockBookCacheDataSource.saveBookList(any()))
             .doReturn(Completable.complete())
 
         val testObserver = bookRepositoryImpl.saveBookList(mockBookList).test()
@@ -90,25 +61,12 @@ class BookRepositoryImplTest {
 
         val mockBookList = TestDataFactory.makeBookList()
 
-        whenever(mockBookCacheDataStore.saveBookList(any()))
+        whenever(mockBookCacheDataSource.saveBookList(any()))
             .doReturn(Completable.complete())
 
         bookRepositoryImpl.saveBookList(mockBookList).test()
 
-        verify(mockBookCacheDataStore).saveBookList(any())
-    }
-
-    @Test
-    fun saveBookList_remoteDataSource() {
-
-        val mockBookList = TestDataFactory.makeBookList()
-
-        whenever(mockBookCacheDataStore.saveBookList(any()))
-            .doReturn(Completable.complete())
-
-        bookRepositoryImpl.saveBookList(mockBookList).test()
-
-        verify(mockBookRemoteDataStore, never()).saveBookList(any())
+        verify(mockBookCacheDataSource).saveBookList(any())
     }
 
     @Test
@@ -116,16 +74,16 @@ class BookRepositoryImplTest {
 
         val mockBookList = TestDataFactory.makeBookList()
 
-        whenever(mockBookCacheDataStore.isCached())
+        whenever(mockBookCacheDataSource.isCached())
             .doReturn(Single.just(true))
 
-        whenever(mockBookDataStoreFactory.retrieveDataStore(any()))
-            .doReturn(mockBookCacheDataStore)
+        whenever(mockBookCacheDataSource.isExpired())
+            .doReturn(false)
 
-        whenever(mockBookCacheDataStore.getBookList())
+        whenever(mockBookCacheDataSource.getBookList())
             .doReturn(Flowable.just(mockBookList))
 
-        whenever(mockBookCacheDataStore.saveBookList(any()))
+        whenever(mockBookCacheDataSource.saveBookList(any()))
             .doReturn(Completable.complete())
 
         val testObserver = bookRepositoryImpl.getBookList().test()
@@ -139,16 +97,16 @@ class BookRepositoryImplTest {
 
         val mockBookList = TestDataFactory.makeBookList()
 
-        whenever(mockBookCacheDataStore.isCached())
+        whenever(mockBookCacheDataSource.isCached())
             .doReturn(Single.just(true))
 
-        whenever(mockBookDataStoreFactory.retrieveDataStore(any()))
-            .doReturn(mockBookCacheDataStore)
+        whenever(mockBookCacheDataSource.isExpired())
+            .doReturn(false)
 
-        whenever(mockBookCacheDataStore.getBookList())
+        whenever(mockBookCacheDataSource.getBookList())
             .doReturn(Flowable.just(mockBookList))
 
-        whenever(mockBookCacheDataStore.saveBookList(any()))
+        whenever(mockBookCacheDataSource.saveBookList(any()))
             .doReturn(Completable.complete())
 
         val testObserver = bookRepositoryImpl.getBookList().test()
@@ -162,16 +120,16 @@ class BookRepositoryImplTest {
 
         val mockBookList = TestDataFactory.makeBookList()
 
-        whenever(mockBookCacheDataStore.isCached())
+        whenever(mockBookCacheDataSource.isCached())
             .doReturn(Single.just(false))
 
-        whenever(mockBookDataStoreFactory.retrieveDataStore(any()))
-            .doReturn(mockBookRemoteDataStore)
+        whenever(mockBookCacheDataSource.isExpired())
+            .doReturn(true)
 
-        whenever(mockBookRemoteDataStore.getBookList())
+        whenever(mockBookRemoteDataSource.getBookList())
             .doReturn(Flowable.just(mockBookList))
 
-        whenever(mockBookCacheDataStore.saveBookList(any()))
+        whenever(mockBookCacheDataSource.saveBookList(any()))
             .doReturn(Completable.complete())
 
         val testObserver = bookRepositoryImpl.getBookList().test()
