@@ -35,7 +35,6 @@ class BookCacheDataSourceImpl(
                     bookList
                         .map {
                         BookTable(
-                            0,
                             it.title,
                             it.price,
                             it.description,

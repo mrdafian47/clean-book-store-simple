@@ -1,6 +1,7 @@
 package com.bookstoresimple.app.ui
 
 import android.os.Bundle
+import android.util.Log
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -25,6 +26,8 @@ class MainActivity : BaseActivity() {
     override fun initView(savedInstanceState: Bundle?) {
         super.initView(savedInstanceState)
 
+        Log.d("Main", "Init View")
+
         with(rvBook) {
             layoutManager = LinearLayoutManager(this@MainActivity)
             itemAnimator = DefaultItemAnimator()
@@ -34,23 +37,29 @@ class MainActivity : BaseActivity() {
 
     override fun observeData() {
 
+        Log.d("Main", "Observe Data")
+
         viewModel.bookList.observe(this, Observer { resource ->
             parseObserveData(resource,
                 resultLoading = {
-
+                    Log.d("Main", "State Loading ")
                 },
                 resultSuccess = {
+                    Log.d("Main", "State Success ")
                     bookList.clear()
                     bookList.addAll(it)
                     bookAdapter.notifyDataSetChanged()
                 },
                 resultError = {
-
+                    Log.d("Main", "State Error ")
+                    it?.printStackTrace()
                 })
         })
     }
 
     override fun loadingData() {
+
+        Log.d("Main", "Loading Data")
 
         viewModel.fetchBookList()
     }

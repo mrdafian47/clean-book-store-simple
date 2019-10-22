@@ -9,7 +9,7 @@ import com.bookstoresimple.app.cache.model.BookTable
 
 @Database(
     entities = [(BookTable::class)],
-    version = 1
+    version = 2
 )
 abstract class BookDatabase : RoomDatabase() {
 
