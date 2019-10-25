@@ -27,7 +27,7 @@ Create first folder repo, then clone project
 
 ```sh
 $ cd Workspace/android/
-$ git clone https://github.com/mohamad-rizki/mhw-mobile
+$ git clone https://github.com/mohamad-rizki/clean-book-store-simple.git
 ```
 
 ### Testing
