@@ -1,0 +1,5 @@
+GUIDE
+=====
+
+Structure application
+
