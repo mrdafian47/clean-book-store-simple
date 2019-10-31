@@ -15,7 +15,7 @@ abstract class FlowableUseCase<T, in Params> constructor(
 
     private val disposables = CompositeDisposable()
 
-    protected abstract fun buildUseCaseObservable(params: Params? = null): Flowable<T>
+    abstract fun buildUseCaseObservable(params: Params? = null): Flowable<T>
 
     open fun execute(observer: DisposableSubscriber<T>, params: Params? = null) {
         val observable = this.buildUseCaseObservable(params)

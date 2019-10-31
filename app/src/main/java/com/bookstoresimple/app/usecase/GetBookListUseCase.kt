@@ -13,7 +13,7 @@ open class GetBookListUseCase(
     private val bookRepository: BookRepository
 ) : FlowableUseCase<List<Book>, Void?>(threadExecutor, postExecutionThread) {
 
-    public override fun buildUseCaseObservable(params: Void?): Flowable<List<Book>> {
+    override fun buildUseCaseObservable(params: Void?): Flowable<List<Book>> {
         return bookRepository.getBookList()
     }
 }
