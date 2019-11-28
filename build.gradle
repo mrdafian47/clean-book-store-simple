@@ -35,6 +35,7 @@ buildscript {
 
         // Testing dependencies
         junitVersion = '4.12'
+        kotlintestVersion = '3.3.2'
         mockitoVersion = '3.0.0'
         mockitoKotlinVersion = '1.5.0'
         coreTestingVersion = '2.0.0'
