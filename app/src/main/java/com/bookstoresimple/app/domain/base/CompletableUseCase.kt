@@ -1,14 +1,12 @@
 package com.bookstoresimple.app.domain.base
 
-import com.bookstoresimple.app.domain.executor.PostExecutionThread
-import com.bookstoresimple.app.domain.executor.ThreadExecutor
 import io.reactivex.Completable
+import io.reactivex.Scheduler
 import io.reactivex.disposables.Disposables
-import io.reactivex.schedulers.Schedulers
 
 abstract class CompletableUseCase<in Params> protected constructor(
-    private val threadExecutor: ThreadExecutor,
-    private val postExecutionThread: PostExecutionThread
+    private val processScheduler: Scheduler,
+    private val mainScheduler: Scheduler
 ) {
 
     private val subscription = Disposables.empty()
@@ -17,8 +15,8 @@ abstract class CompletableUseCase<in Params> protected constructor(
 
     fun execute(params: Params): Completable {
         return this.buildUseCaseObservable(params)
-            .subscribeOn(Schedulers.from(threadExecutor))
-            .observeOn(postExecutionThread.scheduler)
+            .subscribeOn(processScheduler)
+            .observeOn(mainScheduler)
     }
 
     fun unsubscribe() {

@@ -4,17 +4,13 @@ import androidx.room.Room
 import com.bookstoresimple.app.cache.BookCacheDataSourceImpl
 import com.bookstoresimple.app.cache.db.BookDatabase
 import com.bookstoresimple.app.cache.preference.BookPreference
-import com.bookstoresimple.app.data.executor.JobExecutor
 import com.bookstoresimple.app.data.repository.BookRepositoryImpl
 import com.bookstoresimple.app.data.source.BookCacheDataSource
 import com.bookstoresimple.app.data.source.BookRemoteDataSource
-import com.bookstoresimple.app.domain.executor.PostExecutionThread
-import com.bookstoresimple.app.domain.executor.ThreadExecutor
 import com.bookstoresimple.app.domain.repository.BookRepository
 import com.bookstoresimple.app.presentation.viewmodel.BookViewModel
 import com.bookstoresimple.app.remote.BookRemoteDataSourceImpl
 import com.bookstoresimple.app.remote.service.BookServiceFactory
-import com.bookstoresimple.app.ui.UiThread
 import com.bookstoresimple.app.usecase.GetBookListUseCase
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.viewmodel.dsl.viewModel
@@ -26,11 +22,13 @@ val appModule = module {
 
 val cacheModule = module {
 
-    single { Room.databaseBuilder(
-        androidContext(),
-        BookDatabase::class.java,
-        "book.db"
-    ).build() }
+    single {
+        Room.databaseBuilder(
+            androidContext(),
+            BookDatabase::class.java,
+            "book.db"
+        ).build()
+    }
 
     factory { get<BookDatabase>().bookDao() }
 
@@ -62,12 +60,9 @@ val remoteModule = module {
 
 val useCaseModule = module {
 
-    single { GetBookListUseCase(get(), get(), get()) }
+    single { GetBookListUseCase(get()) }
 }
 
 val mobileUiModule = module {
 
-    single { JobExecutor() as ThreadExecutor }
-
-    single { UiThread() as PostExecutionThread }
 }
