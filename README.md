@@ -2,6 +2,7 @@ Book Store Simple App
 =====================
 
 [![CircleCI](https://circleci.com/gh/mohamad-rizki/clean-book-store-simple.svg?style=svg)](https://circleci.com/gh/mohamad-rizki/clean-book-store-simple)
+[![codecov](https://codecov.io/gh/mohamad-rizki/clean-book-store-simple/branch/master/graph/badge.svg)](https://codecov.io/gh/mohamad-rizki/clean-book-store-simple)
 
 Example of using Clean Architecture in Android Application. Build with Kotlin Language
 
