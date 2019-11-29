@@ -44,6 +44,50 @@ buildscript {
         testExtJunit = '1.1.0'
         uiAutomatorVersion = '2.2.0'
         robolectricVersion = '3.4.2'
+
+        fileFilter = [
+                '**/R.class',
+                '**/R$*.class',
+                '**/BuildConfig.*',
+                '**/Manifest*.*',
+                '**/*Test*.*',
+                'android/**/*.*',
+
+                //Butterknife hack for multi-modules poroject
+                '**/R2.class',
+                '**/R2$*.class',
+                '**/*_ViewBinding*.*',
+
+                //Dagger 2
+                '**/*Dagger*Component*.*',
+                '**/*Module.*',
+                '**/*Module$*.*',
+                '**/*MembersInjector*.*',
+                '**/*_Factory*.*',
+                '**/*Provide*Factory*.*',
+
+                //Autofactory
+                '**/*Factory.*',
+                '**/*RealmProxy.*.',
+                '**/*ColumnInfo.*.',
+                '**/*NameHelper.*.',
+
+                //Classes I intentionally don't want to test
+                '**/*Activity.*',
+                '**/*Fragment.*',
+                '**/Glide*.*',
+                '**/GeneratedAppGlideModuleImpl.class',
+                '**/BaseApplication.class',
+                '**/*Adapter.*',
+                '**/adapter/*.*',
+                '**/base/*.*',
+                '**/config/*.*',
+                '**/data/api/*.*',
+                '**/data/db/*.*',
+                '**/data/entity/*.*',
+                '**/util/*.*',
+                '**/*$*$*.*',
+        ]
     }
     repositories {
         google()
@@ -53,6 +97,7 @@ buildscript {
     dependencies {
         classpath 'com.android.tools.build:gradle:3.5.1'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
+        classpath 'com.dicedmelon.gradle:jacoco-android:0.1.4'
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
     }

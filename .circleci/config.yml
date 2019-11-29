@@ -13,6 +13,12 @@ jobs:
       - run:
           name: Run Tests
           command: ./gradlew clean test --parallel --stacktrace --no-daemon
+      - run:
+          name: Run Code Coverage
+          command: ./gradlew jacocoTestReport
+      - run:
+          name: Upload Code Coverage
+          command: bash <(curl -s https://codecov.io/bash)
       - save_cache:
           paths:
              - ~/.gradle
