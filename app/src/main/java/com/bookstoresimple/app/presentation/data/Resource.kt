@@ -10,7 +10,7 @@ open class Resource<out T> constructor(
             return Resource(ResourceState.LOADING, null, null)
         }
 
-        fun <T> success(data: T): Resource<T> {
+        fun <T> success(data: T?): Resource<T> {
             return Resource(ResourceState.SUCCESS, data, null)
         }
 

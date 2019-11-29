@@ -21,7 +21,7 @@ class BookViewModel(
 
     fun fetchBookList() {
         bookList.postValue(
-            Resource(ResourceState.LOADING, null, null)
+            Resource.loading()
         )
         getBookListUseCase.execute(BookSubscriber())
     }
@@ -33,13 +33,13 @@ class BookViewModel(
 
         override fun onNext(t: List<Book>?) {
             bookList.postValue(
-                Resource(ResourceState.SUCCESS, t, null)
+                Resource.success(t)
             )
         }
 
         override fun onError(t: Throwable?) {
             bookList.postValue(
-                Resource(ResourceState.ERROR, null, t)
+                Resource.error(t)
             )
         }
     }
