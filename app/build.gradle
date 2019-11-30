@@ -78,6 +78,14 @@ dependencies {
     androidTestImplementation "androidx.test.espresso:espresso-core:$rootProject.espressoVersion"
 }
 
+jacoco {
+    toolVersion = "0.8.4"
+}
+
 jacocoAndroidUnitTestReport {
     excludes += fileFilter
+}
+
+tasks.withType(Test) {
+    jacoco.includeNoLocationClasses = true
 }

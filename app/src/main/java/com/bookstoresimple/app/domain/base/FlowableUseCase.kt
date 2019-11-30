@@ -1,16 +1,14 @@
 package com.bookstoresimple.app.domain.base
 
-import com.bookstoresimple.app.domain.executor.PostExecutionThread
-import com.bookstoresimple.app.domain.executor.ThreadExecutor
 import io.reactivex.Flowable
+import io.reactivex.Scheduler
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
-import io.reactivex.schedulers.Schedulers
 import io.reactivex.subscribers.DisposableSubscriber
 
 abstract class FlowableUseCase<T, in Params> constructor(
-    private val threadExecutor: ThreadExecutor,
-    private val postExecutionThread: PostExecutionThread
+    private val processScheduler: Scheduler,
+    private val mainScheduler: Scheduler
 ) {
 
     private val disposables = CompositeDisposable()
@@ -19,8 +17,8 @@ abstract class FlowableUseCase<T, in Params> constructor(
 
     open fun execute(observer: DisposableSubscriber<T>, params: Params? = null) {
         val observable = this.buildUseCaseObservable(params)
-            .subscribeOn(Schedulers.from(threadExecutor))
-            .observeOn(postExecutionThread.scheduler) as Flowable<T>
+            .subscribeOn(processScheduler)
+            .observeOn(mainScheduler)
         addDisposable(observable.subscribeWith(observer))
     }
 

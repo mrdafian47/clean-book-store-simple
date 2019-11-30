@@ -1,14 +1,14 @@
 package com.bookstoresimple.app.usecase
 
 import com.bookstoresimple.app.TestDataFactory
-import com.bookstoresimple.app.domain.executor.PostExecutionThread
-import com.bookstoresimple.app.domain.executor.ThreadExecutor
 import com.bookstoresimple.app.domain.repository.BookRepository
 import com.nhaarman.mockito_kotlin.doReturn
 import com.nhaarman.mockito_kotlin.mock
 import com.nhaarman.mockito_kotlin.verify
 import com.nhaarman.mockito_kotlin.whenever
 import io.reactivex.Flowable
+import io.reactivex.Scheduler
+import io.reactivex.schedulers.Schedulers
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
@@ -18,8 +18,7 @@ import org.junit.runners.JUnit4
 @RunWith(JUnit4::class)
 class GetBookListUseCaseTest {
 
-    private lateinit var mockThreadExecutor: ThreadExecutor
-    private lateinit var mockPostExecutionThread: PostExecutionThread
+    private lateinit var mockScheduler: Scheduler
 
     private lateinit var mockBookRepository: BookRepository
 
@@ -28,15 +27,14 @@ class GetBookListUseCaseTest {
     @Before
     fun setUp() {
 
-        mockThreadExecutor = mock()
-        mockPostExecutionThread = mock()
+        mockScheduler = Schedulers.trampoline()
 
         mockBookRepository = mock()
 
         getBookListUseCase = GetBookListUseCase(
-            mockThreadExecutor,
-            mockPostExecutionThread,
-            mockBookRepository
+            mockBookRepository,
+            mockScheduler,
+            mockScheduler
         )
     }
 

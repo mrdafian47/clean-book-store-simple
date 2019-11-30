@@ -18,8 +18,6 @@ class BookCacheDataSourceImpl(
         private const val EXPIRATION_TIME = (60 * 10 * 1000).toLong()
     }
 
-    internal fun getDatabase() = bookDatabase
-
     override fun clearBookList(): Completable {
         return Completable.defer {
             bookDatabase.bookDao()
