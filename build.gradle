@@ -58,6 +58,11 @@ buildscript {
                 '**/R2$*.class',
                 '**/*_ViewBinding*.*',
 
+                //Room
+                '**/*_Impl',
+                '**/*_Impl.*',
+                '**/*_Impl*.*',
+
                 //Dagger 2
                 '**/*Dagger*Component*.*',
                 '**/*Module.*',
