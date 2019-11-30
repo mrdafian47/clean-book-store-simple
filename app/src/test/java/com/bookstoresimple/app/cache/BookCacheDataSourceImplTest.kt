@@ -13,7 +13,7 @@ import org.robolectric.annotation.Config
 
 @RunWith(RobolectricTestRunner::class)
 @Config(sdk = [21])
-class BookCacheImplTest {
+class BookCacheDataSourceImplTest {
 
     private lateinit var mockBookDatabase: BookDatabase
     private lateinit var mockBookPreference: BookPreference
