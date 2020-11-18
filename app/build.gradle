@@ -66,9 +66,10 @@ dependencies {
     implementation "com.facebook.shimmer:shimmer:$rootProject.shimmerVersion"
 
     testImplementation "junit:junit:$rootProject.junitVersion"
+    testImplementation "io.kotlintest:kotlintest-runner-junit5:$rootProject.kotlintestVersion"
+    testImplementation "org.robolectric:robolectric:$rootProject.robolectricVersion"
     testImplementation "org.mockito:mockito-core:$rootProject.mockitoVersion"
     testImplementation "com.nhaarman:mockito-kotlin:$rootProject.mockitoKotlinVersion"
-    testImplementation "org.robolectric:robolectric:$rootProject.robolectricVersion"
     testImplementation "android.arch.persistence.room:testing:$rootProject.roomVersion"
     testImplementation "androidx.arch.core:core-testing:$rootProject.coreTestingVersion"
 
